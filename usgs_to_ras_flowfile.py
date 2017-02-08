@@ -7,6 +7,7 @@ This is a temporary script file.
 
 import math
 import pandas as pd
+from datetime import datetime, timedelta
 from USGS_Data_Grabber import *
 
 
@@ -17,9 +18,12 @@ gage_1 = "01646500"
 gage_2 = "01651750"   
 gage_3 = "01649500" 
 
+end_date = datetime.now()
+start_date = end_date - timedelta(days = 2)
 
-y0, m0 ,d0 = 2017,1, 15                            # Start date (year, month, day)
-y1, m1 ,d1 = 2017,1, 17                           # End date
+
+y0, m0 ,d0 = start_date.year, start_date.month, start_date.day   # Start date (year, month, day)
+y1, m1 ,d1 = end_date.year, end_date.month, end_date.day         # End date
 
 
 flow  = "00060"

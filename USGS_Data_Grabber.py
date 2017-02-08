@@ -99,4 +99,3 @@ def GrabData(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
     #df.head()
     return df
 
-
