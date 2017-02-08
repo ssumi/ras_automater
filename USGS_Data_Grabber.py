@@ -6,7 +6,6 @@
 # ## Example: 
 # ### Get streamflow data from selected gage for time period of interest & plot timeseries results
 
-# 197
 
 # Import libraries
 
@@ -40,8 +39,7 @@ def GrabData(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
     dformat    = "json"                                  # Data Format  
     url        = 'http://waterservices.usgs.gov/nwis/iv' # USGS API
     
-    
-    # 199
+
     
     # Create Datetime Objects
     start     = datetime(y0, m0, d0,0)    
@@ -51,8 +49,7 @@ def GrabData(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
     first    =  datetime.date(start).strftime('%Y-%m-%d')
     last     =  datetime.date(stop).strftime('%Y-%m-%d') 
     
-    
-    # 200
+
     
     # Ping the USGS API for data
     
@@ -63,14 +60,12 @@ def GrabData(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
     data = r.content.decode()
     d = json.loads(data)
     
-    
-    # 201
+
     
     # After reveiwing the JSON Data structure, select only data we need: 
     tseries = d['value']['timeSeries'][0]['values'][0]['value'][:]
     
-    
-    # 202
+  
     
     # Let's see what the keys are in the JSON output:
     mydict = dict(d['value']['timeSeries'][0])
@@ -81,7 +76,7 @@ def GrabData(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
     SiteName = mydict['sourceInfo']['siteName']
     print(SiteName)
     
-    # 203
+  
     
     # Create a Dataframe, format Datetime data,and assign numeric type to observations
     df = pd.DataFrame.from_dict(tseries)
@@ -93,11 +88,7 @@ def GrabData(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
     df.index = df.index - df['UTC Offset']
     df.value = pd.to_numeric(df.value)
     
-    # 204
-    
-    # df.head()
-    
-    # 205
+
     
     # Get Rid of unwanted data, rename observed data
     df = df.drop('dateTime', 1)
