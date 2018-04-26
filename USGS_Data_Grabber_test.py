@@ -8,14 +8,13 @@
 
 
 # Import libraries
-
+import matplotlib.pyplot as plt
 import pandas as pd
 import os
 import requests
 import json
 from datetime import datetime
 from collections import OrderedDict
-import matplotlib.pyplot as plt
 import math
 
 ##--Unsteady flow function
@@ -33,12 +32,14 @@ import math
 
 
 ##--Download usgs data function
-def GrabData(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
+def GrabData_test(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
                                     # Parameter 
     if parameter == '00060':
         obser     = "StreamFlow"
+    elif parameter == '62620':
+        obser     = "elev"                               # Observed data Requested
     elif parameter == '00065':
-        obser     = "Stage"                              # Observed data Requested
+        obser = "Stage" 
     dformat    = "json"                                  # Data Format  
     url        = 'http://waterservices.usgs.gov/nwis/iv' # USGS API
     
@@ -96,24 +97,24 @@ def GrabData(gage, y0, m0 ,d0, y1, m1 ,d1,parameter):
     df.drop('qualifiers',axis = 1, inplace = True)
     df.drop('UTC Offset',axis = 1, inplace = True)
     df = df.rename(columns = {'value':obser})
-    # df.head()
-    #plt.plot(df)
-    
-    
+    #df.head()
     
     ##------ WARNING: ACTUAL DATA DOWNLOADED IS IN FT OR CFS, CONVERTED TO METER ONLY FOR VIEWING---------##
     
-    ##PLOT in meter for viewing only
+    ## PLOT
     if obser == "StreamFlow":
         df_conv = df*0.0283
         units = 'm3/s'
     elif obser == "Stage":
         df_conv = df*0.3048
+        units = 'meter'    
+    elif obser == "elev":
+        df_conv = df*0.3048
         units = 'meter'
         
     df_conv.plot(grid = True, title = '{} (unit:{})'.format(SiteName, units))
     #os.chdir('C:\\Users\\admin\\MasonFloodHazardsResearchLab.github.io\\potomac_total_water\\images')
+    df.plot(grid = True, title = SiteName)
     plt.savefig('{}_{}.PNG'.format(SiteName,obser))
     plt.close()
     return df
-
